@@ -216,8 +216,36 @@ var actions = {
 		try {
 			return {message: getItem(game.player.inventory, command.subject).use(), success: true};
 		} catch (itemNotInInventoryError) {
+			console.log(getItemName(game.player.inventory, command.subject));
 			return {message: 'Can\'t do that.', success: false};
 		}
+	},
+	
+	equip: function(game, command){
+		if(!command.subject){
+			return {message: "What do you want to equip?", success: false};
+		}
+		try{
+			equipItem(game, command.subject)
+			return {message: 'Equipped the ' + command.subject, success: true};
+		} catch(e){
+			if(e == 'itemDoesNotExist'){
+				return {message: command.subject + " does not exist.", success: false};
+			}else if(e == 'itemAlreadyEquipped'){
+				return {message: "You already have the " + command.subject + " equipped.", success: false};
+			} else if( e == "notEquippable"){
+				return {message: command.subject + " cannot be equipped.", success: false};
+			}else if(itemNotInInventoryError) {
+				return {message: "Can\'t do that.", success: false};
+			}
+		}
+	},
+	
+	equipped: function(game, command){
+		if(game.player.weaponEquipped == "nothing"){
+			return {message: "You have no weapon equipped.", success: false};
+		}
+		return {message: "A " + game.player.weaponEquipped + " sits firmly in your grasp.", success: true};
 	}
 };
 
@@ -371,7 +399,62 @@ function interact(game, interaction, subject){
 		return getCurrentLocation(game).interactables[subject][interaction];
 	}
 }
-
+function equipItem(game, item){
+	const obj = getItem(game.player.inventory, item);
+	if(obj.equipped == true){
+		throw "itemAlreadyEquipped";
+	}else if(!isEquippable(obj)){
+		throw "notEquippable";
+	}else if(obj.type === "weapon"){
+		equipWeapon(game.player, obj);
+	} else if (obj.type === "armor"){
+		equipArmor(game.player, obj);
+	} else {
+		throw itemNotInInventoryError;
+	}
+}
+function isEquippable(item){
+	return item.hasOwnProperty('equipped');
+}
+function equipWeapon(player, newWeapon){
+	const curWeapon = player.equipped.weapon;
+	if(curWeapon !== "nothing"){
+		curWeapon.equipped = false;
+	}
+	newWeapon.equipped = true;
+	player.equipped.weapon = newWeapon;
+}
+function equipArmor(player, armorPiece){
+	if(!armorPiece.hasOwnProperty('armorType')){
+		throw "itemDoesNotExist";
+	}
+	let curPiece;
+	switch (armorPiece.armorType){
+		case "head":
+			curPiece = player.equipped.armor.head;
+			player.equipped.armor.head = armorPiece;
+			break;
+		case "chest":
+			curPiece = player.equipped.armor.chest;
+			player.equipped.armor.chest = armorPiece;
+			break;
+		case "arms":
+			curPiece = player.equipped.armor.arms;
+			player.equipped.armor.arms = armorPiece;
+			break;
+		case "legs":
+			curPiece = player.equipped.armor.legs;
+			player.equipped.armor.legs = armorPiece;
+			break;
+		case "feet":
+			curPiece = player.equipped.armor.feet;
+			player.equipped.armor.feet = armorPiece;
+			break;
+	}
+	curPiece.equipped = false;
+	armorPiece.equipped = true;
+	console.log(player);
+}
 function moveItem(itemName, startLocation, endLocation){
 	var itemName = getItemName(startLocation, itemName);
 	var itemAtOrigin = getItem(startLocation, itemName);
