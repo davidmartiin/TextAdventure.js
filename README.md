@@ -58,6 +58,14 @@ The console implements the following player commands: `die`, `drop`, `go`, `inve
 
 The `use` command will run the `use` function of the item in the player's inventory that matches the command's subject.
 
+### `equip` Command
+
+The `equip` command checks to ensure the item that is the subject of the command exists and is within the player's inventory. If so the item is equipped and the equipment list is updated.
+
+### `equipped` Command
+
+The `equipped` command returns a list of the player's `equipped` weapon and armor slots. A subject can be passed to the `equipped` command. However only the following equipment slots have out-of-the-box support: `weapon`, `head`, `chest`, `arms`, `legs`, or `feet`. If one of these subjects is passed, `equipped` will return the description and stats of the item.
+
 ## Cartridges
 
 Cartridges are loaded into the Console and are then playable by the user. The Console does most of the heavy lifting while the Cartridge adds all the flavor. A Cartridge consists of two very important objects, `gameData` and `gameActions`, as well as any number of helper functions.
@@ -177,6 +185,30 @@ The `use()` function will run then the user issues the 'use' command and names t
 **`interactions` Object**
 
 The `interactions` Object of an item is identical to an `interactables` object of a location except that it is tied to the item and will move with said item.
+
+##### `weapon` and `armor` Objects
+
+The **`weapon` and `armor`** objects are still `item` objects. They contain all of the properties mentioned above, as well as a few additional properties:
+
+**`equipped`** 
+
+`equipped` is a boolean indicating whether the item is equipped or not. 
+
+**`type`**
+
+`type` must be a string containing either `weapon` or `armor`.
+
+**`damage`**
+
+`damage` is specific to `item`'s of the `type` `weapon`. It is an array, containing the damage range for a specific weapon. The first index is the minimum and the second index is the maximum. Both must be positive integers.
+
+**`armorType`**
+
+`armorType` must be a string and is specific to `item`'s of the `type` `armor`.
+
+**`defense`**
+
+`defense` is specific to `item`'s of the `type` `armor`. It must be a positive integer indicating the armor value of the item.
 
 ##### `exits` Object
 
