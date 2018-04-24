@@ -188,11 +188,11 @@ The `interactions` Object of an item is identical to an `interactables` object o
 
 ##### `weapon` and `armor` Types
 
-The **`weapon` and `armor`** objects are still `item` objects. They contain all of the properties mentioned above, as well as a few additional properties:
+The **`weapon` and `armor`** objects are still `item` objects. They must contain all of the properties mentioned above, as well as a few additional properties:
 
 **`equipped`** 
 
-`equipped` is a boolean indicating whether the item is equipped or not. 
+`equipped` is a boolean indicating whether the item is equipped or not. It is also the flag used to check if an item is able to be equipped. 
 
 **`type`**
 
@@ -200,7 +200,7 @@ The **`weapon` and `armor`** objects are still `item` objects. They contain all 
 
 **`damage`**
 
-`damage` is specific to `item`'s of the `type` `weapon`. It is an array, containing the damage range for a specific weapon. The first index is the minimum and the second index is the maximum. Both must be positive integers.
+`damage` is specific to `item`'s of the `type` `weapon`. It is required for `weapon`s to function. This should be an array containing the damage range for a specific weapon. The first index is the minimum and the second index is the maximum. Both must be positive integers.
 
 **`armorType`**
 
@@ -208,7 +208,7 @@ The **`weapon` and `armor`** objects are still `item` objects. They contain all 
 
 **`defense`**
 
-`defense` is specific to `item`'s of the `type` `armor`. It must be a positive integer indicating the armor value of the item.
+`defense` is specific to `item`'s of the `type` `armor`. It is required for `armor` to function. It must be a positive integer indicating the armor value of the item.
 
 ##### `exits` Object
 
