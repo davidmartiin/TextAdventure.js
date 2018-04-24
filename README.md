@@ -1,6 +1,6 @@
-# TextAdventure.js
+# TextAdventure.js V2
 
-TextAdventure.js is a text adventure engine that runs on [Node.js](http://nodejs.org/) and makes use of [Express](http://expressjs.com/). The project has four main components: a simple server, a retro command line inspired web interface known as the Terminal, the text adventure engine itself colloquially called the Console and finally the cartridges (games) which are made up of two JavaScript objects. Each of these components is further explained its respective section below.
+TextAdventure.js V2 is a text adventure engine that runs on [Node.js](http://nodejs.org/) and makes use of [Express](http://expressjs.com/). This is a continuation and enhancement of the abandoned "TextAdventure.js" project originally started by [TheBroox](https://github.com/TheBroox). The project has four main components: a simple server, a retro command line inspired web interface known as the Terminal, the text adventure engine itself colloquially called the Console and finally the cartridges (games) which are made up of two JavaScript objects. Each of these components is further explained its respective section below.
 
 ## Server
 
@@ -186,7 +186,7 @@ The `use()` function will run then the user issues the 'use' command and names t
 
 The `interactions` Object of an item is identical to an `interactables` object of a location except that it is tied to the item and will move with said item.
 
-##### `weapon` and `armor` Objects
+##### `weapon` and `armor` Types
 
 The **`weapon` and `armor`** objects are still `item` objects. They contain all of the properties mentioned above, as well as a few additional properties:
 
