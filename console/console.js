@@ -162,9 +162,9 @@ var actions = {
 			var itemObject = game.player.inventory[item];
 			var itemName = itemObject.displayName;
 			if(itemObject.quantity > 1){
-				itemName = itemName.concat(' x'+itemObject.quantity);
+				itemName = itemName + ' x' + itemObject.quantity;
 			}
-			inventoryList = inventoryList.concat('\n'+itemName);
+			inventoryList = inventoryList + '\n' + itemName;
 		}
 		if (inventoryList === 'Your inventory contains:'){
 			return {message: 'Your inventory is empty.', success: true};
@@ -242,10 +242,28 @@ var actions = {
 	},
 	
 	equipped: function(game, command){
-		if(game.player.weaponEquipped == "nothing"){
-			return {message: "You have no weapon equipped.", success: false};
+		if(!command.subject){
+			let equipment = "Your Equipment: \n";
+			equipment = equipment + "WEAPON: " + game.player.equipped.weapon.displayName;
+			for(let item in game.player.equipped.armor){
+				let itemObject = game.player.equipped.armor[item];
+				let itemName = (itemObject.displayName === undefined) ? "nothing" : itemObject.displayName;
+				equipment = equipment + "\n" + item.toUpperCase() + ": " + itemName; 
+			}
+			return {message: equipment, success: true};
+		} else if(game.player.equipped.weapon === "nothing" && game.player.equipped.armor[command.subject] === "nothing") {
+			return {message: "You don't have anything equipped for this slot.", success: false};
+		} else {
+			let itemName = command.subject == 'weapon' ? game.player.equipped.weapon : game.player.equipped.armor[command.subject];
+			let equipmentMessage = "\n" + itemName.displayName + " Stats: \n";
+			equipmentMessage = equipmentMessage + "Description: " + itemName.description;
+			if( command.subject == "weapon" ){
+				equipmentMessage = equipmentMessage + "\nDamage: " + itemName.damage;
+			} else {
+				equipmentMessage = equipmentMessage + "\nArmor: " + itemName.defense;
+			}
+			return {message: equipmentMessage, success: true};
 		}
-		return {message: "A " + game.player.weaponEquipped + " sits firmly in your grasp.", success: true};
 	}
 };
 
@@ -453,7 +471,6 @@ function equipArmor(player, armorPiece){
 	}
 	curPiece.equipped = false;
 	armorPiece.equipped = true;
-	console.log(player);
 }
 function moveItem(itemName, startLocation, endLocation){
 	var itemName = getItemName(startLocation, itemName);

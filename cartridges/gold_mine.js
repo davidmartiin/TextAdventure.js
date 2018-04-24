@@ -19,7 +19,8 @@ var gameData = {
 					hidden: false,
 					equipped: true,
 					type: "armor",
-					armorType: "legs"
+					armorType: "legs",
+					defense: 0
 				},
 				feet: "nothing"
 			}
@@ -49,6 +50,7 @@ var gameData = {
 					description: "A dagger so far gone, you can't tell whether it was used to pick fights... or teeth.",
 					quantity: 1,
 					type: "weapon",
+					damage: 10,
 					hidden: false,
 					equipped: false
 				},
@@ -66,6 +68,7 @@ var gameData = {
 					quantity: 1,
 					type: "armor",
 					armorType: "head",
+					defense: 3,
 					hidden: false,
 					equipped: false
 				},
